@@ -35,7 +35,7 @@ public class Product {
 	@Column(name="product_quantity", nullable=false)
 	private int product_quantity;
 	
-	@OneToOne(mappedBy = "products", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "product", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	private Order order;
 	
 }
