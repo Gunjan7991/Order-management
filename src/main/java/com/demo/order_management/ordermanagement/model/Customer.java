@@ -1,10 +1,13 @@
 package com.demo.order_management.ordermanagement.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -21,7 +24,7 @@ public class Customer {
 	@Id
 	@Column(name = "customer_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int customer_id;
+	private Long customer_id;
 
 	@Column(name = "customer_name", nullable = false, length=50)
 	private String customer_name;
@@ -37,5 +40,8 @@ public class Customer {
 
 	@Column(name = "billing_info", nullable = false, length=50)
 	private String billing_info;
+	
+	@OneToOne(mappedBy = "customer", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	private Order order;
 
 }
