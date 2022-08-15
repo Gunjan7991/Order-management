@@ -35,14 +35,14 @@ public class CustomerController {
 		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
 	
-	@GetMapping("/customers/{email}")
-	public ResponseEntity<Customer> readbyemail(@PathVariable("email") String email) {
-		Customer customer= customerService.getCustomerbyEmail(email);
-		if(customer == null) {
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(customer, HttpStatus.OK);
-	}
+//	@GetMapping("/customers/{email}")
+//	public ResponseEntity<Customer> readbyemail(@PathVariable("email") String email) {
+//		Customer customer= customerService.getCustomerbyEmail(email);
+//		if(customer == null) {
+//			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//		}
+//		return new ResponseEntity<>(customer, HttpStatus.OK);
+//	}
 	
 	@GetMapping("/customers")
 	public ResponseEntity<List<Customer>> readall(){
@@ -63,7 +63,7 @@ public class CustomerController {
 		return new ResponseEntity<>(customer, HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/customers/id")
+	@DeleteMapping("/customers/{id}")
 	public ResponseEntity<Boolean> deletebyId(@PathVariable("id") Long id){
 		if(customerService.deleteCustomerbyID(id)) {
 			return new ResponseEntity<>(true, HttpStatus.NO_CONTENT);
@@ -72,14 +72,14 @@ public class CustomerController {
 		
 	}
 	
-	@DeleteMapping("/customers/email")
-	public ResponseEntity<Boolean> deletebyId(@PathVariable("email") String email){
-		if(customerService.deleteCustomerbyEmail(email)) {
-			return new ResponseEntity<>(true, HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
-		
-	}
+//	@DeleteMapping("/customers/{email}")
+//	public ResponseEntity<Boolean> deletebyId(@PathVariable("email") String email){
+//		if(customerService.deleteCustomerbyEmail(email)) {
+//			return new ResponseEntity<>(true, HttpStatus.NO_CONTENT);
+//		}
+//		return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+//		
+//	}
 	
 	@PutMapping("/customers/{id}")
 	public ResponseEntity<Customer> updatebyid(@PathVariable("id") Long id, @RequestBody CustomerRequest customerRequest){
@@ -90,14 +90,14 @@ public class CustomerController {
 		return new ResponseEntity<>(customer, HttpStatus.ACCEPTED);
 	}
 	
-	@PutMapping("/customers/{email}")
-	public ResponseEntity<Customer> updatebyEmail(@PathVariable("email") String email, @RequestBody CustomerRequest customerRequest){
-		Customer customer = new Customer();
-		customer = customerService.updatebyEmail(email, customerRequest);
-		if(customer == null)
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-		return new ResponseEntity<>(customer, HttpStatus.ACCEPTED);
-	}
+//	@PutMapping("/customers/{email}")
+//	public ResponseEntity<Customer> updatebyEmail(@RequestParam("email") String email, @RequestBody CustomerRequest customerRequest){
+//		Customer customer = new Customer();
+//		customer = customerService.updatebyEmail(email, customerRequest);
+//		if(customer == null)
+//			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//		return new ResponseEntity<>(customer, HttpStatus.ACCEPTED);
+//	}
 	
 }
 
