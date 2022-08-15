@@ -8,5 +8,8 @@ import com.demo.order_management.ordermanagement.model.Customer;
 @Repository
 public interface CustomerDao extends JpaRepository<Customer, Long> {
 	Customer findByCustomerId(Long id);
-	//Customer findByEmail(String email);
+	Customer findByEmail(String email);
+	boolean existsByEmail(String email);
+	void deleteByEmail(String email);
+	
 }
