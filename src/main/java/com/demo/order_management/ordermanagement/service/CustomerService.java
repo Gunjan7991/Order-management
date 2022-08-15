@@ -96,13 +96,13 @@ public class CustomerService {
 		Customer customer = new Customer();
 		try {
 			if (customerDao.existsById(id)) {
-				customer.setCustomerId(id);
+				customer = customerDao.findByCustomerId(id);
 				if (customerRequest.getEmail() != "" && customerRequest.getEmail() != null)
 					customer.setEmail(customerRequest.getEmail());
 				if (customerRequest.getBilling_info() != "" && customerRequest.getBilling_info() != null)
 					customer.setBilling_info(customerRequest.getBilling_info());
 				if (customerRequest.getCustomer_address() != "" && customerRequest.getCustomer_address() != null)
-					customer.setCustomer_name(customerRequest.getCustomer_address());
+					customer.setCustomer_address(customerRequest.getCustomer_address());
 				if (customerRequest.getPhone() != "" && customerRequest.getPhone() != null)
 					customer.setPhone(customerRequest.getPhone());
 				customer = customerDao.save(customer);
@@ -118,11 +118,11 @@ public class CustomerService {
 		Customer customer = new Customer();
 		try {
 			if (customerDao.existsByEmail(email)) {
-				customer.setEmail(email);
+				customer = customerDao.findByEmail(email);
 				if (customerRequest.getBilling_info() != "" && customerRequest.getBilling_info() != null)
 					customer.setBilling_info(customerRequest.getBilling_info());
 				if (customerRequest.getCustomer_address() != "" && customerRequest.getCustomer_address() != null)
-					customer.setCustomer_name(customerRequest.getCustomer_address());
+					customer.setCustomer_address(customerRequest.getCustomer_address());
 				if (customerRequest.getPhone() != "" && customerRequest.getPhone() != null)
 					customer.setPhone(customerRequest.getPhone());
 				customer = customerDao.save(customer);

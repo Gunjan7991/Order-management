@@ -72,7 +72,7 @@ public class ProductService {
 		Product product = new Product();
 		try {
 			if(productDao.existsById(id)) {
-				product.setProductId(id);
+				product = productDao.findByProductId(id);
 				if(productRequest.getPrice() != null && productRequest.getPrice()>0)
 					product.setProduct_price(productRequest.getPrice());
 				if(productRequest.getQuantity() != null && productRequest.getQuantity()>=0)
