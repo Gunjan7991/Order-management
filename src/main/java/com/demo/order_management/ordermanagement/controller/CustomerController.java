@@ -1,94 +1,41 @@
 package com.demo.order_management.ordermanagement.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.order_management.ordermanagement.dao.CustomerDao;
 import com.demo.order_management.ordermanagement.model.Customer;
+import com.demo.order_management.ordermanagement.request.CustomerRequest;
+import com.demo.order_management.ordermanagement.service.CustomerService;
 
 @RestController
+@RequestMapping(value="/amazon/v1/api")
 public class CustomerController {
 
 	@Autowired
-	private CustomerDao customerDao;
+	CustomerService customerService;
 
-	@GetMapping("/customer")
-	public Map<String, Customer> read(@RequestParam String email, Model model) {
-		Customer customer = new Customer();
-		customer = customerDao.getCustomer(email);
-		HashMap<String, Customer> map = new HashMap<>();
-		map.put("Data", customer);
-		return map;
+	@GetMapping("/customers/{id}")
+	public ResponseEntity<Customer> read(@PathVariable("id") Long id) {
+		Customer customer= customerService.getCustomer(id);
+		if(customer == null) {
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
-
-//
+	
 	@PostMapping("/customers")
-	public Map<String, String> create(@RequestParam String name, @RequestParam String address, @RequestParam String email, @RequestParam String phone, @RequestParam String billing, Model model) {
-		
-	//public Map<String, String> create(@RequestBody String name, @RequestBody String address, @RequestBody String email, @RequestBody String phone, @RequestBody String billing, Model model) {
-		
-		HashMap<String, String> map = new HashMap<>();
-		Customer customer = new Customer();
-		customer.setCustomer_name(name);
-		customer.setCustomer_address(address);
-		customer.setEmail(email);
-		customer.setPhone(phone);
-		customer.setBilling_info(billing);
-
-		boolean added = customerDao.addCustomer(customer);
-		if (added) {
-			map.put("Data", "Customer Added Sucessfully.");
-			return map;
-		} else {
-			map.put("Data", "Something went Wrong!!!");
-			return map;
+	public ResponseEntity<Customer> create(@RequestBody CustomerRequest customerRequest){
+		Customer customer = customerService.addCustomer(customerRequest);
+		if(customer.getCustomer_id() == null) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-	}
-
-	@GetMapping("/customers")
-	public Map<String, List<Customer>> read_all(Model model) {
-		List<Customer> cust_list = customerDao.getCustomer();
-		Map<String, List<Customer>> outter_map = new HashMap<>();
-		outter_map.put("Data", cust_list);
-		return outter_map;
-
-	}
-
-	@PutMapping("/customers")
-	public Map<String, String> update(@RequestParam String email, @RequestParam String phone,
-			@RequestParam String customer_address) {
-		boolean updated = customerDao.updateCustomer(email, phone, customer_address);
-		HashMap<String, String> map = new HashMap<>();
-		if (updated) {
-			map.put("Data", "Customer Updated Sucessfully.");
-			return map;
-		} else {
-			map.put("Data", "Something went Wrong!!!");
-			return map;
-		}
-	}
-
-	@DeleteMapping("/customers")
-	public Map<String, String> delete(@RequestParam String email, Model model) {
-		System.out.println(email);
-		boolean deleted = customerDao.deleteCustomer(email);
-		HashMap<String, String> map = new HashMap<>();
-		if (deleted) {
-			map.put("Data", "Customer Deleted Sucessfully.");
-			return map;
-		} else {
-			map.put("Data", "Something went Wrong!!!");
-			return map;
-		}
+		return new ResponseEntity<>(customer, HttpStatus.CREATED);
 	}
 }

@@ -24,7 +24,7 @@ public class Customer {
 	@Id
 	@Column(name = "customer_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long customer_id;
+	private Long customerId;
 
 	@Column(name = "customer_name", nullable = false, length=50)
 	private String customer_name;
@@ -38,7 +38,7 @@ public class Customer {
 	@Column(name = "phone", nullable = false, length=15)
 	private String phone;
 
-	@Column(name = "billing_info", nullable = false, length=50)
+	@Column(name = "billing_info", length=50)
 	private String billing_info;
 	
 	@OneToOne(mappedBy = "customer", cascade=CascadeType.ALL, fetch = FetchType.LAZY)

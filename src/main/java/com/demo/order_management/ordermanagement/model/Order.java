@@ -24,7 +24,7 @@ public class Order {
 	@Id
 	@Column(name = "order_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long order_id;
+	private Long orderId;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id")
