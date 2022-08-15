@@ -82,7 +82,6 @@ public class CustomerService {
 		try {
 			if (customerDao.existsByEmail(email)) {
 				customerDao.deleteByEmail(email);
-				;
 				return true;
 			}
 			return false;
