@@ -33,7 +33,7 @@ public class CustomerController {
 	@PostMapping("/customers")
 	public ResponseEntity<Customer> create(@RequestBody CustomerRequest customerRequest){
 		Customer customer = customerService.addCustomer(customerRequest);
-		if(customer.getCustomer_id() == null) {
+		if(customer.getCustomerId() == null) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(customer, HttpStatus.CREATED);
