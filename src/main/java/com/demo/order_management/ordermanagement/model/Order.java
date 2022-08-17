@@ -35,10 +35,10 @@ public class Order {
 	private Product product;
 
 	@Column(name = "quantity", nullable = false)
-	private int quantity;
+	private Integer quantity;
 
 	@Column(name = "billing_total", nullable = false)
-	private float billing_total;
+	private Double billing_total;
 
 	@Column(name = "shipping_address", nullable = false)
 	private String shipping_address;

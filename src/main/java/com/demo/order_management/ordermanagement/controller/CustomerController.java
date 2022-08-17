@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.order_management.ordermanagement.model.Customer;
@@ -52,6 +53,17 @@ public class CustomerController {
 			return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<>(customer, HttpStatus.OK);
+	}
+	
+	@GetMapping("/customers/withpage")
+	public ResponseEntity<List<Customer>> readallbypagination(@RequestParam("page_number") Integer page_number, @RequestParam("page_size") Integer page_size){
+		List<Customer> customer = new LinkedList<Customer>();
+		customer = customerService.getCustomerswithpagination(page_number, page_size);
+		if(customer.isEmpty()) {
+			return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<>(customer, HttpStatus.OK);
+	
 	}
 	
 	@PostMapping("/customers")

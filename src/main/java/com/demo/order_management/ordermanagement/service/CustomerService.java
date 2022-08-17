@@ -4,6 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.demo.order_management.ordermanagement.dao.CustomerDao;
@@ -49,6 +52,20 @@ public class CustomerService {
 		return customer;
 	}
 
+
+	public List<Customer> getCustomerswithpagination(Integer page_number, Integer page_size) {
+		List<Customer> customer = new LinkedList<Customer>();
+		try {
+			Page<Customer> customerPage = customerDao.findAll(PageRequest.of(page_number, page_size, Sort.by("name").ascending()));
+			for(Customer custom: customerPage) {
+				customer.add(custom);
+			}
+			return customer;
+		} catch (Exception e) {
+			// System.out.println("Exception: "+ e);
+		}
+		return customer;
+	}
 	public Customer addCustomer(CustomerRequest customerRequest) {
 		Customer customer = new Customer();
 		try {
