@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductRequest {
 	String product_name;
-	Float price;
+	Double price;
 	Integer quantity;
 
 }

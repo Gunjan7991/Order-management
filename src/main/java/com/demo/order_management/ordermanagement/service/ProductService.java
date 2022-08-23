@@ -77,7 +77,7 @@ public class ProductService {
 					product.setProduct_price(productRequest.getPrice());
 				if(productRequest.getQuantity() != null && productRequest.getQuantity()>=0)
 					product.setProduct_quantity(productRequest.getQuantity());
-				
+				return product;
 			}
 		} catch (Exception e) {
 			// System.out.println("Exception: "+ e);

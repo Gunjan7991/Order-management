@@ -27,21 +27,24 @@ public class Customer {
 	private Long customerId;
 
 	@Column(name = "customer_name", nullable = false, length=50)
-	private String customer_name;
+	private String customerName;
 
 	@Column(name = "customer_address", length=60)
-	private String customer_address;
+	private String customerAddress;
 
 	@Column(name = "email", nullable = false, unique = true, length = 30)
 	private String email;
+	
+	@Column(name = "password", nullable = false, unique = true, length = 30)
+	private String password;
 
 	@Column(name = "phone", nullable = false, length=15)
 	private String phone;
 
 	@Column(name = "billing_info", length=50)
-	private String billing_info;
+	private String billingInfo;
 	
 	@OneToOne(mappedBy = "customer", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	private Order order;
+	private Invoice invoice;
 
 }

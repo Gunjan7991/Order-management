@@ -1,5 +1,6 @@
 package com.demo.order_management.ordermanagement.service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import com.demo.order_management.ordermanagement.dao.CustomerDao;
 import com.demo.order_management.ordermanagement.model.Customer;
 import com.demo.order_management.ordermanagement.request.CustomerRequest;
+import com.demo.order_management.ordermanagement.response.BaseCustomerResponse;
+import com.demo.order_management.ordermanagement.response.CustomerResponse;
 
 @Service
 public class CustomerService {
@@ -19,15 +22,29 @@ public class CustomerService {
 	@Autowired
 	CustomerDao customerDao;
 
-	public Customer getCustomer(Long id) {
+	public BaseCustomerResponse getCustomer(Long id) { // also check how basecustomerresponse class as well as customerresponse  class was made.
+		BaseCustomerResponse response = new BaseCustomerResponse();
+		CustomerResponse custResponse = new CustomerResponse();
 		Customer customer = new Customer();
 		try {
+			
+			
 			customer = customerDao.findByCustomerId(id);
-			return customer;
+			custResponse.setCustomerId(customer.getCustomerId());
+			custResponse.setCustomerName(customer.getCustomerName());
+			custResponse.setEmail(customer.getEmail());
+			custResponse.setPassword(customer.getPassword());
+			custResponse.setCustomerAddress(customer.getCustomerAddress());
+			response.setData(custResponse);
+			response.setMessage("Customer value was sucessfully retrived.");
+			return response;
 		} catch (Exception e) {
 			// System.out.println("Exception: "+ e);
+			response.setData(custResponse);
+			response.setMessage("No value for ID: "+id+" was found!!");
+			return response;
 		}
-		return customer;
+		
 	}
 
 	public Customer getCustomerbyEmail(String email) {
@@ -53,27 +70,33 @@ public class CustomerService {
 	}
 
 
-	public List<Customer> getCustomerswithpagination(Integer page_number, Integer page_size) {
-		List<Customer> customer = new LinkedList<Customer>();
+	public List<Customer> getCustomerswithpagination(Integer page_number, Integer page_size) { // see the example of pagination here
+		List<Customer> customer = new ArrayList<>();
+		System.out.println(page_number+" "+ page_size);
 		try {
-			Page<Customer> customerPage = customerDao.findAll(PageRequest.of(page_number, page_size, Sort.by("name").ascending()));
+			Page<Customer> customerPage = customerDao.findAll(PageRequest.of(page_number, page_size, Sort.by("customerName").ascending())); // make sure to have the name of your variable in standard java convention i.e(variableName)  and not like this i.e(varibale_name)
+			//Page<Customer> customerPage = customerDao.findAll(PageRequest.of(page_number, page_size, Sort.b)))
+			System.out.println(customerPage);
 			for(Customer custom: customerPage) {
 				customer.add(custom);
 			}
+			System.out.println(customer);
 			return customer;
 		} catch (Exception e) {
-			// System.out.println("Exception: "+ e);
+			System.out.println("Exception: "+ e);
 		}
 		return customer;
 	}
+	
 	public Customer addCustomer(CustomerRequest customerRequest) {
 		Customer customer = new Customer();
 		try {
-			customer.setCustomer_name(customerRequest.getCustomer_name());
+			customer.setCustomerName(customerRequest.getCustomerName());
 			customer.setEmail(customerRequest.getEmail());
 			customer.setPhone(customerRequest.getPhone());
-			customer.setBilling_info(customerRequest.getBilling_info());
-			customer.setCustomer_address(customerRequest.getCustomer_address());
+			customer.setPassword(customerRequest.getPassword());
+			customer.setBillingInfo(customerRequest.getBillingInfo());
+			customer.setCustomerAddress(customerRequest.getCustomerAddress());
 			customer = customerDao.save(customer);
 			return customer;
 		} catch (Exception e) {
@@ -115,12 +138,14 @@ public class CustomerService {
 				customer = customerDao.findByCustomerId(id);
 				if (customerRequest.getEmail() != "" && customerRequest.getEmail() != null)
 					customer.setEmail(customerRequest.getEmail());
-				if (customerRequest.getBilling_info() != "" && customerRequest.getBilling_info() != null)
-					customer.setBilling_info(customerRequest.getBilling_info());
-				if (customerRequest.getCustomer_address() != "" && customerRequest.getCustomer_address() != null)
-					customer.setCustomer_address(customerRequest.getCustomer_address());
+				if (customerRequest.getBillingInfo() != "" && customerRequest.getBillingInfo() != null)
+					customer.setBillingInfo(customerRequest.getBillingInfo());
+				if (customerRequest.getCustomerAddress() != "" && customerRequest.getCustomerAddress() != null)
+					customer.setCustomerAddress(customerRequest.getCustomerAddress());
 				if (customerRequest.getPhone() != "" && customerRequest.getPhone() != null)
 					customer.setPhone(customerRequest.getPhone());
+				if (customerRequest.getPassword() != "" && customerRequest.getPassword() != null)
+					customer.setPassword(customerRequest.getPassword());
 				customer = customerDao.save(customer);
 				return customer;
 			}
@@ -135,12 +160,14 @@ public class CustomerService {
 		try {
 			if (customerDao.existsByEmail(email)) {
 				customer = customerDao.findByEmail(email);
-				if (customerRequest.getBilling_info() != "" && customerRequest.getBilling_info() != null)
-					customer.setBilling_info(customerRequest.getBilling_info());
-				if (customerRequest.getCustomer_address() != "" && customerRequest.getCustomer_address() != null)
-					customer.setCustomer_address(customerRequest.getCustomer_address());
+				if (customerRequest.getBillingInfo() != "" && customerRequest.getBillingInfo() != null)
+					customer.setBillingInfo(customerRequest.getBillingInfo());
+				if (customerRequest.getCustomerAddress() != "" && customerRequest.getCustomerAddress() != null)
+					customer.setCustomerAddress(customerRequest.getCustomerAddress());
 				if (customerRequest.getPhone() != "" && customerRequest.getPhone() != null)
 					customer.setPhone(customerRequest.getPhone());
+				if (customerRequest.getPassword() != "" && customerRequest.getPassword() != null)
+					customer.setPassword(customerRequest.getPassword());
 				customer = customerDao.save(customer);
 				return customer;
 			}

@@ -30,10 +30,10 @@ public class Product {
 	private String product_name;
 	
 	@Column(name="product_price", nullable=false)
-	private float product_price;
+	private Double product_price;
 	
 	@Column(name="product_quantity", nullable=false)
-	private int product_quantity;
+	private Integer product_quantity;
 	
 	@OneToOne(mappedBy = "product", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	private Order order;

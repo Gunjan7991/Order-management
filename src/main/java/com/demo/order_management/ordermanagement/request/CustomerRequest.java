@@ -10,15 +10,17 @@ import lombok.NoArgsConstructor;
 public class CustomerRequest {
 
 
-	private String customer_name;
+	private String customerName;
 
-	private String customer_address;
+	private String customerAddress;
 
 	private String email;
+	
+	private String password;
 
 	private String phone;
 
-	private String billing_info;
+	private String billingInfo;
 
 }
 

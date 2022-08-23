@@ -7,8 +7,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,10 +29,6 @@ public class Order {
 	private Long orderId;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "customer_id")
-	private Customer customer;
-
-	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
 	private Product product;
 
@@ -38,12 +36,11 @@ public class Order {
 	private Integer quantity;
 
 	@Column(name = "billing_total", nullable = false)
-	private Double billing_total;
+	private Double total;
 
-	@Column(name = "shipping_address", nullable = false)
-	private String shipping_address;
-
-	@Column(name = "payment", nullable = false)
-	private String payment;
+	
+	@ManyToOne
+	@JoinColumn(name = "invoice_id", nullable = false)
+	private Invoice invoice;
 
 }

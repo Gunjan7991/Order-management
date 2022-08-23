@@ -16,7 +16,5 @@ public class OrderRequest {
 	private Customer customer;
 	private Product product;
 	private Integer quantity;
-	private Double billing_total; 
-	private String shipping_address;
-	private String payment;
+	private Double total; 
 }

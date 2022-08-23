@@ -29,8 +29,8 @@ public class ProductController {
 	@GetMapping("/products/{id}")
 	public ResponseEntity<Product> read(@PathVariable("id") Long id) {
 		Product product = productService.find(id);
-		if (product == null) {
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		if (product.getProductId() == null) {
+			return new ResponseEntity<>(product, HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(product, HttpStatus.OK);
 	}
@@ -40,7 +40,7 @@ public class ProductController {
 		List<Product> product = new LinkedList<Product>();
 		product = productService.find_all();
 		if (product.isEmpty()) {
-			return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(product, HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<>(product, HttpStatus.OK);
 	}
@@ -49,13 +49,13 @@ public class ProductController {
 	public ResponseEntity<Product> create(@RequestBody ProductRequest productRequest) {
 		Product product = productService.create(productRequest);
 		if (product.getProductId() == null) {
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(product, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(product, HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/products/{id}")
-	public ResponseEntity<Boolean> deletebyId(@PathVariable("id") Long id) {
+	public ResponseEntity<Boolean> delete(@PathVariable("id") Long id) {
 		if (productService.delete(id)) {
 			return new ResponseEntity<>(true, HttpStatus.NO_CONTENT);
 		}
@@ -64,11 +64,11 @@ public class ProductController {
 	}
 
 	@PutMapping("/products/{id}")
-	public ResponseEntity<Product> updatebyid(@PathVariable("id") Long id, @RequestBody ProductRequest productRequest) {
+	public ResponseEntity<Product> update(@PathVariable("id") Long id, @RequestBody ProductRequest productRequest) {
 		Product product = new Product();
 		product = productService.update(id, productRequest);
-		if (product == null)
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		if (product.getProductId() == null)
+			return new ResponseEntity<>(product, HttpStatus.NOT_FOUND);
 		return new ResponseEntity<>(product, HttpStatus.ACCEPTED);
 	}
 

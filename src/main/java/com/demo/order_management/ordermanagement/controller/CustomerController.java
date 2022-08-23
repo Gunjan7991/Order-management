@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.order_management.ordermanagement.model.Customer;
 import com.demo.order_management.ordermanagement.request.CustomerRequest;
+import com.demo.order_management.ordermanagement.response.BaseCustomerResponse;
 import com.demo.order_management.ordermanagement.service.CustomerService;
 
 @RestController
@@ -27,20 +28,25 @@ public class CustomerController {
 	@Autowired
 	CustomerService customerService;
 
-	@GetMapping("/customers/{id}")
-	public ResponseEntity<Customer> read(@PathVariable("id") Long id) {
-		Customer customer= customerService.getCustomer(id);
-		if(customer == null) {
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+	@GetMapping("/customers/{id}") //Example of custom response
+	public ResponseEntity<BaseCustomerResponse> read(@PathVariable("id") Long id) {
+		BaseCustomerResponse baseResponse = new BaseCustomerResponse();
+		baseResponse= customerService.getCustomer(id); // see the customer service class as well so that how the custom response was made.
+		
+		if(baseResponse.getData().getCustomerId() == null) {
+			baseResponse.setMessage("Unsucessfull creation.");
+			return new ResponseEntity<>(baseResponse, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(customer, HttpStatus.OK);
+		
+		baseResponse.setMessage("Creation Sucess");
+		return new ResponseEntity<>(baseResponse, HttpStatus.OK);
 	}
 	
 	@GetMapping("/customers/byemail/{email}")
 	public ResponseEntity<Customer> readbyemail(@PathVariable("email") String email) {
 		Customer customer= customerService.getCustomerbyEmail(email);
-		if(customer == null) {
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		if(customer.getCustomerId() == null) {
+			return new ResponseEntity<>(customer, HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
@@ -70,7 +76,7 @@ public class CustomerController {
 	public ResponseEntity<Customer> create(@RequestBody CustomerRequest customerRequest){
 		Customer customer = customerService.addCustomer(customerRequest);
 		if(customer.getCustomerId() == null) {
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(customer, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(customer, HttpStatus.CREATED);
 	}
@@ -85,7 +91,7 @@ public class CustomerController {
 	}
 	
 	@DeleteMapping("/customers/byemail/{email}")
-	public ResponseEntity<Boolean> deletebyId(@PathVariable("email") String email){
+	public ResponseEntity<Boolean> deletebyEmail(@PathVariable("email") String email){
 		if(customerService.deleteCustomerbyEmail(email)) {
 			return new ResponseEntity<>(true, HttpStatus.NO_CONTENT);
 		}
@@ -97,8 +103,8 @@ public class CustomerController {
 	public ResponseEntity<Customer> updatebyid(@PathVariable("id") Long id, @RequestBody CustomerRequest customerRequest){
 		Customer customer = new Customer();
 		customer = customerService.update(id, customerRequest);
-		if(customer == null)
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		if(customer.getCustomerId() == null)
+			return new ResponseEntity<>(customer, HttpStatus.NOT_FOUND);
 		return new ResponseEntity<>(customer, HttpStatus.ACCEPTED);
 	}
 	
@@ -106,8 +112,8 @@ public class CustomerController {
 	public ResponseEntity<Customer> updatebyEmail(@PathVariable("email") String email, @RequestBody CustomerRequest customerRequest){
 		Customer customer = new Customer();
 		customer = customerService.updatebyEmail(email, customerRequest);
-		if(customer == null)
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		if(customer.getCustomerId() == null)
+			return new ResponseEntity<>(customer, HttpStatus.NOT_FOUND);
 		return new ResponseEntity<>(customer, HttpStatus.ACCEPTED);
 	}
 	
