@@ -12,10 +12,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -53,12 +56,15 @@ public class Invoice {
 	@Column(name = "payment", nullable = false)
 	private String payment;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Customer customer;
 	
 	
 	//@JoinColumn(name="invoice_id")
-	@OneToMany(mappedBy = "invoice",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Order> order = new HashSet<>();
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "order_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Order order;
 }

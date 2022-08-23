@@ -1,5 +1,8 @@
 package com.demo.order_management.ordermanagement.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,7 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -44,7 +47,7 @@ public class Customer {
 	@Column(name = "billing_info", length=50)
 	private String billingInfo;
 	
-	@OneToOne(mappedBy = "customer", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	private Invoice invoice;
+	@OneToMany(mappedBy="customer", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<Invoice> invoice = new HashSet<>();
 
 }
