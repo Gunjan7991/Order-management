@@ -1,16 +1,10 @@
 package com.demo.order_management.ordermanagement.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -38,7 +32,7 @@ public class Customer {
 	@Column(name = "email", nullable = false, unique = true, length = 30)
 	private String email;
 	
-	@Column(name = "password", nullable = false, unique = true, length = 30)
+	@Column(name = "password", nullable = false, length = 90)
 	private String password;
 
 	@Column(name = "phone", nullable = false, length=15)
@@ -47,7 +41,5 @@ public class Customer {
 	@Column(name = "billing_info", length=50)
 	private String billingInfo;
 	
-	@OneToMany(mappedBy="customer", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<Invoice> invoice = new HashSet<>();
 
 }

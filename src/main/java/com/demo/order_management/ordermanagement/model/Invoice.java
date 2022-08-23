@@ -1,8 +1,6 @@
 package com.demo.order_management.ordermanagement.model;
 
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
@@ -57,14 +54,14 @@ public class Invoice {
 	private String payment;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "customer_id", nullable = false)
+	@JoinColumn(name = "customer_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Customer customer;
 	
 	
 	//@JoinColumn(name="invoice_id")
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "order_id", nullable = false)
+	@JoinColumn(name = "order_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Order order;
 }

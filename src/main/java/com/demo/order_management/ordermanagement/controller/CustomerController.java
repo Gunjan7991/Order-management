@@ -51,6 +51,7 @@ public class CustomerController {
 		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
 	
+	
 	@GetMapping("/customers")
 	public ResponseEntity<List<Customer>> readall(){
 		List<Customer> customer = new LinkedList<Customer>();

@@ -98,10 +98,13 @@ public class CustomerService {
 			customer.setBillingInfo(customerRequest.getBillingInfo());
 			customer.setCustomerAddress(customerRequest.getCustomerAddress());
 			customer = customerDao.save(customer);
+			System.out.println(customer);
 			return customer;
+
 		} catch (Exception e) {
-			// System.out.println("Exception: "+ e);
+			 System.out.println("Exception: "+ e);
 		}
+		System.out.println(customer);
 		return customer;
 	}
 
