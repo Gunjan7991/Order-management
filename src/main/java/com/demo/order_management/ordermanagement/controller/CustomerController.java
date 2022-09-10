@@ -74,7 +74,7 @@ public class CustomerController {
 	
 	}
 	
-	@PostMapping("/customers")
+	@PostMapping("/customers/create")
 	public ResponseEntity<Customer> create(@RequestBody CustomerRequest customerRequest){
 		Customer customer = customerService.addCustomer(customerRequest);
 		if(customer.getCustomerId() == null) {
