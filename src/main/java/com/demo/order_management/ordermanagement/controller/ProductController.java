@@ -26,6 +26,7 @@ public class ProductController {
 	@Autowired
 	ProductService productService;
 
+	
 	@GetMapping("/products/{id}")
 	public ResponseEntity<Product> read(@PathVariable("id") Long id) {
 		Product product = productService.find(id);
