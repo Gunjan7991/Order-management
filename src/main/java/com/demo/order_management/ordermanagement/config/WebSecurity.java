@@ -6,24 +6,56 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 public class WebSecurity extends WebSecurityConfigurerAdapter{
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.httpBasic().and().authorizeRequests()
-		.antMatchers("/amazon/v1/api/customers")
-		.hasRole ("admin").and().csrf().disable().formLogin().disable();
-		
+	@Autowired
+	private UserDetailsService myUserDetailsService;
+	@Autowired
+	private JwtRequestFilter jwtRequestFilter;
+
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(myUserDetailsService);
 	}
-	
-	
-//	@Override
-//	protected void configure(AuthenticationManagerBuilder auth)throws Exception{
-//		auth.inMemoryAuthentication()
-//			.withUser("username")
-//			.password("password")
-//			.roles("USER"); 
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder(12);
+	}
+//	
+//	protected void configure(HttpSecurity httpSecurity) throws Exception {
+//		 httpSecurity.csrf().disable()
+//		 .authorizeHttpRequests().antMatchers("/hospital/v1/api/*").permitAll()
+//		// all other requests need to be authenticated
+//         .anyRequest().authenticated();
+//		// Add a filter to validate the tokens with every request
+//		//return httpSecurity.build();
+//
 //	}
+
 //	@Bean
-//	public PasswordEncoder getPasswordEncoder() {
+//	public PasswordEncoder passwordEncoder() {
 //		return NoOpPasswordEncoder.getInstance();
 //	}
+
+	@Override
+	@Bean
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
+	@Override
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		
+		httpSecurity.csrf().disable().authorizeRequests()
+//				.anyRequest().permitAll()
+				.antMatchers("/auth/authenticate").permitAll()
+				.antMatchers("/swagger-ui.html").permitAll()
+//				.antMatchers("/hospital/v1/api/all/patients").permitAll()
+				.antMatchers("/amazon/v1/api/customers/create").permitAll()
+				.antMatchers("/amazon/v1/api/customers/**").hasAuthority("Customer")
+//				.anyRequest().hasAuthority("Doctor")
+				.and().exceptionHandling().and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
+	}
+
 }
