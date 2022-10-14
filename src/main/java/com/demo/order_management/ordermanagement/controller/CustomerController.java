@@ -21,11 +21,8 @@ import com.demo.order_management.ordermanagement.request.CustomerRequest;
 import com.demo.order_management.ordermanagement.response.BaseCustomerResponse;
 import com.demo.order_management.ordermanagement.service.CustomerService;
 
-import io.swagger.annotations.Api;
-
 @RestController
 @RequestMapping(value="/amazon/v1/api")
-@Api(value="customer", description="Operations pertaining to customers in Dummazon")
 public class CustomerController {
 
 	@Autowired
@@ -40,6 +37,7 @@ public class CustomerController {
 			baseResponse.setMessage("Unsucessfull creation.");
 			return new ResponseEntity<>(baseResponse, HttpStatus.NOT_FOUND);
 		}
+		
 		
 		baseResponse.setMessage("Creation Sucess");
 		return new ResponseEntity<>(baseResponse, HttpStatus.OK);
